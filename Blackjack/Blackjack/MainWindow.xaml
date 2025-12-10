@@ -34,8 +34,34 @@
             </DrawingBrush>
         </Grid.Background>
         
-        
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="952"/>
+        </Grid.ColumnDefinitions>
+        
+        
+        <StackPanel Grid.Row="0" Grid.Column="0" Height="230.94" >
+            <TextBlock Text="Game" FontWeight="Bold"/>
+        </StackPanel>
+
+        <StackPanel 
+            Grid.Row="0" Grid.Column="1">
+            <TextBlock Text="Bank" FontWeight="Bold"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Height="230.94" >
+            <TextBlock Text="Player" FontWeight="Bold"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1"></StackPanel>
+
+
     </Grid>
 </Window>
