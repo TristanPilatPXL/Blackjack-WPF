@@ -10,10 +10,14 @@
 
   <ItemGroup>
     <None Remove="Images\blackjack-background.png" />
+    <None Remove="Images\cards\back.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\blackjack-background.png" />
+    <Resource Include="Images\cards\back.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

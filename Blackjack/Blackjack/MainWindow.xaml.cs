@@ -19,6 +19,9 @@ namespace Blackjack
         public MainWindow()
         {
             InitializeComponent();
+
         }
+
     }
+
 }
