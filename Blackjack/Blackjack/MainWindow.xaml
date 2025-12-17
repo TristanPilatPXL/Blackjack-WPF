@@ -12,11 +12,13 @@
         Foreground="White">
 
     <Grid>
+        
+        
         <Grid.Background>
             <DrawingBrush>
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
-                        <ImageDrawing ImageSource="/Images/blackjack-background.png" Rect="0,0,1,1" />
+                        <ImageDrawing ImageSource="pack://application:,,,/Images/blackjack-background.png" Rect="0,0,1,1" />
                         <GeometryDrawing>
                             <GeometryDrawing.Brush>
                                 <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
@@ -60,15 +62,16 @@
 
                     <StackPanel Grid.Row="0" Margin="0,0,0,6" HorizontalAlignment="Stretch">
                         <TextBlock Text="Welkom bij Blackjack" FontWeight="SemiBold" Foreground="White" Margin="0,0,0,6"/>
-                        <Button x:Name="NewGameButton"
-                                Width="150"
+                        <Button Width="150"
                                 Height="36"
                                 Content="New Game"
                                 Background="#2E8B2E"
                                 BorderBrush="#1E6B1E"
                                 Foreground="White"
                                 BorderThickness="3"
-                                HorizontalAlignment="Center"/>
+                                HorizontalAlignment="Center"
+                                x:Name="StartNewGame"
+                                Click="Start"/>
                     </StackPanel>
 
                     <Separator Grid.Row="1" Margin="0,10,0,10" Height="1" Background="DimGray"/>
@@ -91,7 +94,7 @@
                                    FontSize="40"
                                    Foreground="LightGray"
                                    HorizontalAlignment="Right"
-                                   VerticalAlignment="top"
+                                   VerticalAlignment="Top"
                                    Margin="0,0,6,6"/>
                     </Grid>
                 </Grid>
@@ -100,6 +103,45 @@
 
         <GroupBox Grid.Row="0" Grid.Column="1" Header="Bank" FontWeight="Bold" Margin="10">
         </GroupBox>
+
+        <!-- Kaart die getoond wordt -->
+        <Image Grid.Column="1"
+               x:Name="CardImage1"
+               Source="/Images/cards/clubs_9.png"
+               
+               Height="170"
+               Margin="30,20,0,0"
+               HorizontalAlignment="Left" />
+        
+        <Image Grid.Column="2"
+       x:Name="CardImage2"
+       Source="/Images/cards/back.png"
+       
+       Height="170"
+       Margin="170,20,0,0"
+       HorizontalAlignment="Left" />
+
+
+        <Image Grid.Row="3" Grid.Column="1"
+        x:Name="PlayerCard1"
+        Source="/Images/cards/clubs_9.png"
+        
+        Height="170"
+        Margin="30,20,0,0"
+        HorizontalAlignment="Left" />
+
+        <Image Grid.Row="3" Grid.Column="1"
+        x:Name="PlayerCard2"
+        Source="/Images/cards/back.png"
+        Height="170"
+        Margin="170,20,0,0"
+        HorizontalAlignment="Left" />
+        
+        
+
+
+
+
 
         <Grid Grid.Row="1" Grid.Column="1" Margin="0,6,0,6">
             <Grid.ColumnDefinitions>
@@ -113,13 +155,13 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Width="220">
-                <TextBlock Text="Place your bet"
+                <TextBlock x:Name="PlayLabel" Text="Place your bet"
                            FontSize="18"
                            Foreground="White"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,8"/>
 
-                <TextBox Width="140"
+                <TextBox x:Name="PlayText" Width="140"
                          Height="26"
                          HorizontalAlignment="Center"
                          Margin="0,0,0,12"
@@ -134,7 +176,8 @@
                         BorderThickness="3"
                         Foreground="White"
                         FontWeight="SemiBold"
-                        HorizontalAlignment="Center"/>
+                        HorizontalAlignment="Center"
+                        Click="Play_Click"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2"
@@ -142,7 +185,7 @@
                         VerticalAlignment="Center"
                         Margin="40,0,0,0">
                 <Grid Width="120" Height="170" HorizontalAlignment="Center" Margin="0,0,0,12">
-                    <Image Source="/Images/cards/back.png" Stretch="UniformToFill"/>
+                    <Image Source="pack://application:,,,/Images/cards/back.png" Stretch="UniformToFill"/>
                     <TextBlock x:Name="CardValueText"
                                Text="52"
                                Foreground="White"
@@ -158,15 +201,16 @@
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="Card"
+                    <Button x:Name="CardButton" Content="Card"
                             Width="70"
                             Height="30"
                             Background="#2E8B2E"
                             BorderBrush="#1E6B1E"
                             BorderThickness="2"
                             Foreground="White"
-                            Margin="6,0"/>
-                    <Button Content="Stop"
+                            Margin="6,0"
+                            Click="CardButton_Click"/>
+                    <Button x:Name="StopButton" Content="Stop"
                             Width="70"
                             Height="30"
                             Background="#D9534F"
@@ -184,8 +228,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="0" FontSize="20" Foreground="White" HorizontalAlignment="Right" Margin="0,4,0,4"/>
-                <TextBlock Grid.Row="2" Text="0" FontSize="20" Foreground="White" HorizontalAlignment="Right" Margin="0,4,0,4"/>
+                <TextBlock x:Name="Botscore" Grid.Row="0" Text="0" FontSize="20" Foreground="White" HorizontalAlignment="Right" Margin="0,4,0,4"/>
+                <TextBlock x:Name="Playerscore" Grid.Row="2" Text="0" FontSize="20" Foreground="White" HorizontalAlignment="Right" Margin="0,4,0,4"/>
             </Grid>
         </Grid>
 
@@ -193,5 +237,14 @@
         </GroupBox>
 
         <Border Grid.Row="1" Grid.Column="1" Margin="6,0" BorderBrush="#33FFFFFF" BorderThickness="0,1,0,0"/>
+
+
+        <TextBlock x:Name="WonText" Grid.Column="1" Grid.Row="1" Text="You won!!!" FontWeight="Bold" Foreground="White"  FontSize="72" TextAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock x:Name="WonBack" Grid.Column="1" Grid.Row="1" FontWeight="Bold" Foreground="White"  Background="#3000FF00" FontSize="72" />
+
+        <TextBlock x:Name="LoseText" Grid.Column="1" Grid.Row="1" Text="You lose!!!" FontWeight="Bold" Foreground="White"  FontSize="72" TextAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock x:Name="LoseBack" Grid.Column="1" Grid.Row="1" FontWeight="Bold" Foreground="White"  Background="#40FF0000" FontSize="72" />
+
+
     </Grid>
 </Window>
