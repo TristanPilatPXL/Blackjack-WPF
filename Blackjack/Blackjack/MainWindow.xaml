@@ -61,7 +61,6 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Margin="0,0,0,6" HorizontalAlignment="Stretch">
-                        <TextBlock Text="Welkom bij Blackjack" FontWeight="SemiBold" Foreground="White" Margin="0,0,0,6"/>
                         <Button Width="150"
                                 Height="36"
                                 Content="New Game"
@@ -121,6 +120,37 @@
        Margin="170,20,0,0"
        HorizontalAlignment="Left" />
 
+        <Image Grid.Row="0" Grid.Column="1"
+x:Name="CardImage3"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="310,20,0,0"
+HorizontalAlignment="Left" />
+
+
+        <Image Grid.Row="0" Grid.Column="1"
+x:Name="CardImage4"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="450,20,0,0"
+HorizontalAlignment="Left" />
+
+        <Image Grid.Row="0" Grid.Column="1"
+x:Name="CardImage5"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="590,20,0,0"
+HorizontalAlignment="Left" />
+
+        <Image Grid.Row="0" Grid.Column="1"
+x:Name="CardImage6"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="730,20,0,0"
+HorizontalAlignment="Left" />
+
+
+
 
         <Image Grid.Row="3" Grid.Column="1"
         x:Name="PlayerCard1"
@@ -136,8 +166,35 @@
         Height="170"
         Margin="170,20,0,0"
         HorizontalAlignment="Left" />
-        
-        
+
+        <Image Grid.Row="3" Grid.Column="1"
+x:Name="PlayerCard3"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="310,20,0,0"
+HorizontalAlignment="Left" />
+
+
+        <Image Grid.Row="3" Grid.Column="1"
+x:Name="PlayerCard4"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="450,20,0,0"
+HorizontalAlignment="Left" />
+
+        <Image Grid.Row="3" Grid.Column="1"
+x:Name="PlayerCard5"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="590,20,0,0"
+HorizontalAlignment="Left" />
+
+        <Image Grid.Row="3" Grid.Column="1"
+x:Name="PlayerCard6"
+Source="/Images/cards/back.png"
+Height="170"
+Margin="730,20,0,0"
+HorizontalAlignment="Left" />
 
 
 
@@ -244,6 +301,9 @@
 
         <TextBlock x:Name="LoseText" Grid.Column="1" Grid.Row="1" Text="You lose!!!" FontWeight="Bold" Foreground="White"  FontSize="72" TextAlignment="Center" VerticalAlignment="Center" />
         <TextBlock x:Name="LoseBack" Grid.Column="1" Grid.Row="1" FontWeight="Bold" Foreground="White"  Background="#40FF0000" FontSize="72" />
+
+        <TextBlock x:Name="TieText" Grid.Column="1" Grid.Row="1" Text="Its a tie!!!" FontWeight="Bold" Foreground="White"  FontSize="72" TextAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock x:Name="TieBack" Grid.Column="1" Grid.Row="1" FontWeight="Bold" Foreground="White"  Background="#40C8C8C8" FontSize="72" />
 
 
     </Grid>

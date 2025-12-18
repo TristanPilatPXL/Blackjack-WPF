@@ -7,7 +7,6 @@ namespace Blackjack
 {
     public partial class MainWindow : Window
     {
-        // Deck (laat zoals je hebt, met pack-URI's)
         private readonly Card[] _deck = new Card[]
         {
             // CLUBS
@@ -72,6 +71,11 @@ namespace Blackjack
         private int _botScore = 0;
         private int _playerScore = 0;
 
+        private readonly Image[] _playerSlots;
+        private readonly Image[] _botSlots;
+        private int _playerCardCount = 0;
+        private int _botCardCount = 0;
+
         public class Card
         {
             public string ImageUrl { get; set; } = "";
@@ -82,21 +86,90 @@ namespace Blackjack
         {
             InitializeComponent();
 
+            _playerSlots = new[]
+            {
+                PlayerCard1, PlayerCard2, PlayerCard3, PlayerCard4, PlayerCard5, PlayerCard6
+            };
+            _botSlots = new[]
+            {
+                CardImage1, CardImage2, CardImage3, CardImage4, CardImage5, CardImage6
+            };
+
             Play.Visibility = Visibility.Hidden;
             PlayLabel.Visibility = Visibility.Hidden;
             PlayText.Visibility = Visibility.Hidden;
             CardButton.Visibility = Visibility.Hidden;
             StopButton.Visibility = Visibility.Hidden;
 
-            CardImage1.Visibility = Visibility.Hidden;
-            CardImage2.Visibility = Visibility.Hidden;
-            PlayerCard1.Visibility = Visibility.Hidden;
-            PlayerCard2.Visibility = Visibility.Hidden;
+            HideAllSlots();
+            HideResult();
 
-            LoseBack.Visibility = Visibility.Hidden;
-            LoseText.Visibility = Visibility.Hidden;
+            StopButton.Click += StopButton_Click;
+        }
+
+        private void HideAllSlots()
+        {
+            foreach (var slot in _playerSlots)
+            {
+                slot.Visibility = Visibility.Hidden;
+                slot.Source = null;
+            }
+            foreach (var slot in _botSlots)
+            {
+                slot.Visibility = Visibility.Hidden;
+                slot.Source = null;
+            }
+        }
+
+        private void HideResult()
+        {
             WonBack.Visibility = Visibility.Hidden;
             WonText.Visibility = Visibility.Hidden;
+            LoseBack.Visibility = Visibility.Hidden;
+            LoseText.Visibility = Visibility.Hidden;
+            TieBack.Visibility = Visibility.Hidden;
+            TieText.Visibility = Visibility.Hidden;
+        }
+
+        private void ShowWin()
+        {
+            HideResult();
+            WonBack.Visibility = Visibility.Visible;
+            WonText.Visibility = Visibility.Visible;
+        }
+
+        private void ShowLose()
+        {
+            HideResult();
+            LoseBack.Visibility = Visibility.Visible;
+            LoseText.Visibility = Visibility.Visible;
+        }
+
+        private void ShowNeutral()
+        {
+            HideResult();
+            TieBack.Visibility = Visibility.Visible;
+            TieText.Visibility = Visibility.Visible;
+        }
+
+        private void ResetPlayerSlots()
+        {
+            foreach (var slot in _playerSlots)
+            {
+                slot.Visibility = Visibility.Hidden;
+                slot.Source = null;
+            }
+            _playerCardCount = 0;
+        }
+
+        private void ResetBotSlots()
+        {
+            foreach (var slot in _botSlots)
+            {
+                slot.Visibility = Visibility.Hidden;
+                slot.Source = null;
+            }
+            _botCardCount = 0;
         }
 
         // Kies 11 voor Aas als het past, anders 1
@@ -114,34 +187,50 @@ namespace Blackjack
 
         private Card DrawRandomCard() => _deck[_rnd.Next(_deck.Length)];
 
+        private void DealCardToPlayer(Card card)
+        {
+            if (_playerCardCount >= _playerSlots.Length) return;
+            var slot = _playerSlots[_playerCardCount++];
+            slot.Source = new BitmapImage(new Uri(card.ImageUrl, UriKind.Absolute));
+            slot.Visibility = Visibility.Visible;
+
+            _playerScore += GetCardPoints(card, isPlayer: true);
+            Playerscore.Text = _playerScore.ToString();
+        }
+
+        private void DealCardToBot(Card card)
+        {
+            if (_botCardCount >= _botSlots.Length) return;
+            var slot = _botSlots[_botCardCount++];
+            slot.Source = new BitmapImage(new Uri(card.ImageUrl, UriKind.Absolute));
+            slot.Visibility = Visibility.Visible;
+
+            _botScore += GetCardPoints(card, isPlayer: false);
+            Botscore.Text = _botScore.ToString();
+            CardValueText.Text = _botScore.ToString();
+        }
+
         private void Start(object sender, RoutedEventArgs e)
         {
-            // reset scores
             _botScore = 0;
             _playerScore = 0;
             Botscore.Text = "0";
             Playerscore.Text = "0";
+            CardValueText.Text = "0";
+
+            HideResult();
+            ResetPlayerSlots();
+            ResetBotSlots();
 
             Play.Visibility = Visibility.Visible;
             PlayLabel.Visibility = Visibility.Visible;
             PlayText.Visibility = Visibility.Visible;
 
-            CardImage1.Visibility = Visibility.Visible;
-            CardImage2.Visibility = Visibility.Visible;
-            PlayerCard1.Visibility = Visibility.Visible;
-            PlayerCard2.Visibility = Visibility.Visible;
+            CardButton.Visibility = Visibility.Hidden;
+            StopButton.Visibility = Visibility.Hidden;
 
-            // Bot krijgt 2 kaarten
-            var b1 = DrawRandomCard();
-            CardImage1.Source = new BitmapImage(new Uri(b1.ImageUrl, UriKind.Absolute));
-            _botScore += GetCardPoints(b1, isPlayer: false);
-
-            var b2 = DrawRandomCard();
-            CardImage2.Source = new BitmapImage(new Uri(b2.ImageUrl, UriKind.Absolute));
-            _botScore += GetCardPoints(b2, isPlayer: false);
-
-            Botscore.Text = _botScore.ToString();
-            CardValueText.Text = _botScore.ToString(); // centrale teller
+            DealCardToBot(DrawRandomCard());
+            DealCardToBot(DrawRandomCard());
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
@@ -153,25 +242,71 @@ namespace Blackjack
             PlayLabel.Visibility = Visibility.Hidden;
             PlayText.Visibility = Visibility.Hidden;
 
-            // Speler krijgt 2 kaarten
-            var p1 = DrawRandomCard();
-            PlayerCard1.Source = new BitmapImage(new Uri(p1.ImageUrl, UriKind.Absolute));
-            _playerScore += GetCardPoints(p1, isPlayer: true);
+            DealCardToPlayer(DrawRandomCard());
+            DealCardToPlayer(DrawRandomCard());
 
-            var p2 = DrawRandomCard();
-            PlayerCard2.Source = new BitmapImage(new Uri(p2.ImageUrl, UriKind.Absolute));
-            _playerScore += GetCardPoints(p2, isPlayer: true);
-
-            Playerscore.Text = _playerScore.ToString();
+            CheckImmediateBusts();
         }
 
         private void CardButton_Click(object sender, RoutedEventArgs e)
         {
-            // Extra kaart voor speler
-            var next = DrawRandomCard();
-            PlayerCard2.Source = new BitmapImage(new Uri(next.ImageUrl, UriKind.Absolute));
-            _playerScore += GetCardPoints(next, isPlayer: true);
-            Playerscore.Text = _playerScore.ToString();
+            DealCardToPlayer(DrawRandomCard());
+            CheckImmediateBusts();
+        }
+
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            while (_botScore < 17)
+            {
+                DealCardToBot(DrawRandomCard());
+            }
+
+            FinishRound();
+        }
+
+        private void CheckImmediateBusts()
+        {
+            if (_playerScore > 21)
+            {
+                EndGame(playerWins: false);
+            }
+        }
+
+        private void FinishRound()
+        {
+            if (_botScore > 21)
+            {
+                EndGame(playerWins: true);
+                return;
+            }
+
+            if (_playerScore > 21)
+            {
+                EndGame(playerWins: false);
+                return;
+            }
+
+            if (_playerScore > _botScore)
+                EndGame(playerWins: true);
+            else if (_playerScore < _botScore)
+                EndGame(playerWins: false);
+            else
+                EndGameNeutral();
+        }
+
+        private void EndGame(bool playerWins)
+        {
+            if (playerWins) ShowWin();
+            else ShowLose();
+            CardButton.Visibility = Visibility.Hidden;
+            StopButton.Visibility = Visibility.Hidden;
+        }
+
+        private void EndGameNeutral()
+        {
+            CardButton.Visibility = Visibility.Hidden;
+            StopButton.Visibility = Visibility.Hidden;
+            ShowNeutral();
         }
     }
 }
